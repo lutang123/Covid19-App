@@ -40,10 +40,11 @@ class API {
 
   //URL Syntax: http/https://host               :port/path?queryParameters
   //https://apigw.nubentos.com:443/token?grant_type=client_credentials
+  ///https://stackoverflow.com/questions/52824388/how-do-you-add-query-parameters-to-a-dart-http-request
   Uri tokenUri() => Uri(
         scheme: 'https',
         host: host, //'apigw.nubentos.com'
-        port: port, //443
+        port: port, //443, optional
         path: 'token',
         queryParameters: {'grant_type': 'client_credentials'},
       );

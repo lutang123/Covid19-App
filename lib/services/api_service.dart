@@ -64,8 +64,15 @@ class APIService {
     );
     if (response.statusCode == 200) {
       //data is an array
+      //https://stackoverflow.com/questions/55520386/what-is-the-difference-between-json-decode-and-jsondecode-in-flutter
       final List<dynamic> data = json.decode(response.body);
-
+      print('data: $data');
+      // flutter: data: [{date: 2021-01-02T04:39:30.000Z, data: 1835287}]
+      // flutter: data: [{date: 2021-01-02T04:39:30.000Z, data: 17026}]
+      // flutter: data: [{date: 2021-01-02T04:39:30.000Z, data: 22904258}]
+      // flutter: data: [{date: 2021-01-02T04:39:30.000Z, data: 84379178}]
+      // flutter: data: [{date: 2021-01-02T04:39:30.000Z, data: 59639633}]
+      // flutter: data: [{date: 2021-01-02T04:39:30.000Z, data: 801}]
       if (data.isNotEmpty) {
         //result data is in an array, and only one value
         final Map<String, dynamic> endpointData = data[0];
@@ -78,15 +85,56 @@ class APIService {
         if (value != null) {
           return EndpointData(value: value, date: date);
         }
-//        if (value != null) {
-//          return value;
-//        }
       }
     }
     print(
         'Request ${api.tokenUri()} failed\nResponse: ${response.statusCode} ${response.reasonPhrase}');
     throw response;
   }
+}
+
+/// notes from payload
+/// import 'dart:async';
+// import 'dart:convert';
+// import 'dart:io';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:http/http.dart' as http;
+// import 'package:tdg_mobile/app/enviroment/EnvironmentConfig.dart';
+// import '../app/database/models/documents_model.dart';
+//
+// Future<List<DocumentModel>> fetchDocuments() async {
+//   final storage = FlutterSecureStorage();
+//   final token = await storage.read(key: 'jwt');
+//   final headers = <String, String>{
+//     HttpHeaders.contentTypeHeader: 'application/json',
+//     HttpHeaders.authorizationHeader: 'Bearer $token',
+//   };
+//   final response = await http.get('${EnvironmentConfig.API_URL}/api/documents',
+//       headers: headers);
+//   print('response: $response');
+//   List<DocumentModel> docsList;
+//   if (response.statusCode == 200) {
+//     print('response.body: ${response.body}');
+//     final data = jsonDecode(response.body);
+//     print('data: $data');
+//     final list = data['documents'] as List;
+//     print('list: $list');
+//     if (list.isNotEmpty) {
+//       docsList = list
+//           .map(
+//             (element) => DocumentModel.fromJson(element),
+//           )
+//           .toList();
+//       return docsList;
+//     }
+//   }
+//   throw Exception('Could not load data');
+// }
+//
+// //flutter: response: Instance of 'Response'
+// //flutter: response.body: {"documents":[{"id":20,"carrierId":2,"externalDocumentId":19,"waybillNumber":"BOL823720","status":0,"recordedAt":"2020-12-26T16:05:08.722Z","consignorId":3,"consignorName":null,"consignedAt":null,"deliveredAt":null,"creatorId":null,"updatedAt":"2020-12-30T17:31:50.647Z","createdAt":"2020-12-30T17:31:50.647Z"},{"id":19,"carrierId":2,"externalDocumentId":18,"waybillNumber":"BOL823719","status":0,"recordedAt":"2020-03-04T10:51:08.436Z","consignorId":3,"consignorName":null,"consignedAt":null,"deliveredAt":null,"creatorId":null,"updatedAt":"2020-12-30T17:31:50.646Z","createdAt":"2020-12-30T17:31:50.646Z"},{"id":18,"carrierId":2,"externalDocumentId":17,"waybillNumber":"BOL823718","status":0,"recordedAt":"2020-12-18T11:56:49.846Z","consignorId":4,"consignorName":null,"consignedAt":null,"deliveredAt":null,"creatorId":null,"updatedAt":"2020-12-30T17:31:50.646Z","createdAt":"2020-12-30T17:31:50.646Z"},{"id":17,"carrierId":2,"externalDocumentId":16,"waybillNumber":"BOL823717","stat<…>
+// //flutter: data: {documents: [{id: 20, carrierId: 2, externalDocumentId: 19, waybillNumber: BOL823720, status: 0, recordedAt: 2020-12-26T16:05:08.722Z, consignorId: 3, consignorName: null, consignedAt: null, deliveredAt: null, creatorId: null, updatedAt: 2020-12-30T17:31:50.647Z, createdAt: 2020-12-30T17:31:50.647Z}, {id: 19, carrierId: 2, externalDocumentId: 18, waybillNumber: BOL823719, status: 0, recordedAt: 2020-03-04T10:51:08.436Z, consignorId: 3, consignorName: null, consignedAt: null, deliveredAt: null, creatorId: null, updatedAt: 2020-12-30T17:31:50.646Z, createdAt: 2020-12-30T17:31:50.646Z}, {id: 18, carrierId: 2, externalDocumentId: 17, waybillNumber: BOL823718, status: 0, recordedAt: 2020-12-18T11:56:49.846Z, consignorId: 4, consignorName: null, consignedAt: null, deliveredAt: null, creatorId: null, updatedAt: 2020-12-30T17:31:50.646Z, createdAt: 2020-12-30T17:31:50.646Z}, {id: 17, carrierId: 2, externalDocumentId: 16, waybillNumber: BOL823717, status: 0, recordedAt: 2020-09-15T01:09:2<…>
+// //flutter: list: [{id: 20, carrierId: 2, externalDocumentId: 19, waybillNumber: BOL823720, status: 0, recordedAt: 2020-12-26T16:05:08.722Z, consignorId: 3, consignorName: null, consignedAt: null, deliveredAt: null, creatorId: null, updatedAt: 2020-12-30T17:31:50.647Z, createdAt: 2020-12-30T17:31:50.647Z}, {id: 19, carrierId: 2, externalDocumentId: 18, waybillNumber: BOL823719, status: 0, recordedAt: 2020-03-04T10:51:08.436Z, consignorId: 3, consignorName: null, consignedAt: null, deliveredAt: null, creatorId: null, updatedAt: 2020-12-30T17:31:50.646Z, createdAt: 2020-12-30T17:31:50.646Z}, {id: 18, carrierId: 2, externalDocumentId: 17, waybillNumber: BOL823718, status: 0, recordedAt: 2020-12-18T11:56:49.846Z, consignorId: 4, consignorName: null, consignedAt: null, deliveredAt: null, creatorId: null, updatedAt: 2020-12-30T17:31:50.646Z, createdAt: 2020-12-30T17:31:50.646Z}, {id: 17, carrierId: 2, externalDocumentId: 16, waybillNumber: BOL823717, status: 0, recordedAt: 2020-09-15T01:09:20.736Z, cons<…>
 
 //  //using version   1.0.0 with different key names.
 //  static Map<Endpoint, String> _responseJsonKeys = {
@@ -96,8 +144,6 @@ class APIService {
 //    Endpoint.deaths: 'data',
 //    Endpoint.recovered: 'data',
 //  };
-
-}
 
 //class EndpointData {
 //  EndpointData({@required this.value, this.date}) : assert(value != null);

@@ -1,7 +1,6 @@
 import 'package:covid19/services/api.dart';
 import 'package:covid19/services/api_service.dart';
 import 'package:covid19/services/data_cache_service.dart';
-import 'package:covid19/services/endpoint_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'endpoints_data.dart';
@@ -15,13 +14,14 @@ class DataRepository {
 
   String _accessToken;
 
-  //we changed api service to return EndpointData instead of int, so we need to
-  //change here too.
-  Future<EndpointData> getEndpointData(Endpoint endpoint) async =>
-      await _getDataRefreshingToken<EndpointData>(
-        onGetData: () => apiService.getEndpointData(
-            accessToken: _accessToken, endpoint: endpoint),
-      );
+  ///changed to call all endpoint data instead of one by one
+  // //we changed api service to return EndpointData instead of int, so we need to
+  // //change here too.
+  // Future<EndpointData> getEndpointData(Endpoint endpoint) async =>
+  //     await _getDataRefreshingToken<EndpointData>(
+  //       onGetData: () => apiService.getEndpointData(
+  //           accessToken: _accessToken, endpoint: endpoint),
+  //     );
 
 //  //this is the function we use in UI
 //  Future<EndpointsData> getAllEndpointsData() async =>

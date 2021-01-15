@@ -1,4 +1,5 @@
 //https://marketplace.visualstudio.com/items?itemName=humao.rest-client&ssr=false#overview
+
 Environment Variables
 For environment variables, each environment comprises a set of key value pairs defined in setting file, key and value are variable name and value respectively. Only variables defined in selected environment and shared environment are available to you. You can also reference the variables in shard environment with {{$shared variableName}} syntax in your active environment. Below is a sample piece of setting file for custom environments and environment level variables:
 

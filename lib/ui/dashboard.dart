@@ -16,6 +16,15 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   //_endpointsData has a property called values and its type is: Map<Endpoint, EndpointData>
+
+  //class EndpointData {
+  //   EndpointData({@required this.value, this.date}) : assert(value != null);
+  //   final int value;
+  //   final DateTime date;
+  //
+  //   @override
+  //   String toString() => 'date: $date, value: $value';
+  // }
   EndpointsData _endpointsData;
 
   //the following is not good because this requires multi API calls one by one
@@ -31,7 +40,8 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     //we first get cached data from shared preference, otherwise we may open with a non-data screen
     final dataRepository = Provider.of<DataRepository>(context, listen: false);
-    _endpointsData = dataRepository.getAllEndpointsCachedData();
+    _endpointsData =
+        dataRepository.getAllEndpointsCachedData(); //return EndpointsData
     //then we call this api method
     _updateData();
   }
@@ -41,7 +51,9 @@ class _DashboardState extends State<Dashboard> {
     try {
       final dataRepository =
           Provider.of<DataRepository>(context, listen: false);
-      final endpointsData = await dataRepository.getAllEndpointsData();
+      final endpointsData = await dataRepository //this function fetch and save
+          .getAllEndpointsData(); //return Future<EndpointsData>
+      //replace new data to old one
       setState(() => _endpointsData = endpointsData);
       //SocketException from dart:io
       //if we say catch(e) and we don't need to use the e, we can replace as _
@@ -142,8 +154,12 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     final formatter = LastUpdatedDateFormatter(
       lastUpdated: _endpointsData != null
+          //_endpointsData.values is Map<Endpoint, EndpointData>
+          //_endpointsData.values[Endpoint.cases] means an endpointData
+          //if not null, get the date
+          //values[key]
           ? _endpointsData.values[Endpoint.cases]?.date
-          : null,
+          : null, //if null, it return ''
     );
     return Scaffold(
       appBar: AppBar(
@@ -179,7 +195,7 @@ class _DashboardState extends State<Dashboard> {
                     // _endpointsData.values[endpoint] is not null, we get it's value
                     //otherwise we might get a common error saying getter is null ...
                     ? _endpointsData.values[endpoint]?.value
-                    : null,
+                    : null, //if (value == null) { return ''; }
               ),
 
             //endPointData is this:

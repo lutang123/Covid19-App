@@ -11,7 +11,7 @@ class EndPointCardData {
 
 class EndPointCard extends StatelessWidget {
   const EndPointCard({Key key, this.endpoint, this.value}) : super(key: key);
-  final Endpoint endpoint;
+  final Endpoint endpoint; //enum
   final int value;
 
   static Map<Endpoint, EndPointCardData> _cardsData = {
